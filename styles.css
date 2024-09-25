@@ -1,0 +1,33 @@
+/* Titulo del Proyecto: pagina-pokemon.
+Elaborado por: Carlos Leal.
+Fecha de inicio: 24/09/24
+Version: 1.0 
+Fecha de inicio de esta version: 24/09/24
+Fecha de finalización de esta version: 25/09/24 */
+
+/* ESTILOS DEL BODY */
+body {
+    font-family: 'Oswald', sans-serif; 
+    background-color: #e0e0e0;
+}
+
+/* ESTILOS DE LA BARRA DE NAVEGACION */
+.navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.500); /* Ajusta el tamaño y el color de la sombra */
+}
+
+.navbar-nav .nav-link {
+    transition: color 0.3s ease-in-out; /* Añade una transición suave al color */
+}
+
+/* ESTILOS DE TARJETAS */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-in-out;
+    border-radius: 25px;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Añade un efecto de zoom al pasar el cursor */
+}
+
