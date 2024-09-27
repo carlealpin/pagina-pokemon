@@ -5,24 +5,14 @@ Version: 1.2
 Fecha de inicio de esta version: 26/09/24
 Fecha de finalización de esta version: 26/09/24 */
 
-/* ARREGLO DE INFORMACION DE POKEMON */
-const pokemons = [
-    /* KANTO */
-    { region: "Kanto", number: 1, name: "Bulbasaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png", des: "Tras nacer, crece alimentándose durante un tiempo de los nutrientes que contiene el bulbo de su lomo.", hab: ["Espesura"], h: 0.7, w: 6.9 },
-    { region: "Kanto", number: 2, name: "Ivysaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png", des: "Cuanta más luz solar recibe, más aumenta su fuerza y más se desarrolla el capullo que tiene en el lomo.", hab: ["Espesura"], h: 1.0, w: 13.0 },
-    { region: "Kanto", number: 3, name: "Venusaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png", des: "Puede convertir la luz del sol en energía. Por esa razón, es más poderoso en verano.", hab: ["Espesura"], h: 2.0, w: 100.0 },
-    { region: "Kanto", number: 4, name: "Charmander", type: ["Fuego"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png", des: "La llama de su cola indica su fuerza vital. Si está débil, la llama arderá más tenue.", hab: ["Mar Llamas"], h: 0.6, w: 8.5 },
-    { region: "Kanto", number: 5, name: "Charmeleon", type: ["Fuego"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png", des: "Al agitar su ardiente cola, eleva poco a poco la temperatura a su alrededor para sofocar a sus rivales.", hab: ["Mar Llamas"], h: 1.1, w: 19.0 },
-    { region: "Kanto", number: 6, name: "Charizard", type: ["Fuego", "Volador"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png", des: "Cuando se enfurece de verdad, la llama de la punta de su cola se vuelve de color azul claro.", hab: ["Mar Llamas"], h: 1.7, w: 90.5 },
-    { region: "Kanto", number: 7, name: "Squirtle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png", des: "Tras nacer, se le hincha el lomo y se le forma un caparazón. Escupe poderosa espuma por la boca.", hab: ["Torrente"], h: 0.5, w: 9.0 },
-    { region: "Kanto", number: 8, name: "Wartortle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png", des: "Tiene una cola larga y peluda que simboliza la longevidad y lo hace popular entre los mayores.", hab: ["Torrente"], h: 1.0, w: 22.5 },
-    { region: "Kanto", number: 9, name: "Blastoise", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png", des: "Aumenta de peso deliberadamente para contrarrestar la fuerza de los chorros de agua que dispara.", hab: ["Torrente"], h: 1.6, w: 85.5 },
-    { region: "Kanto", number: 25, name: "Pikachu", type: ["Eléctrico"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png", des: "Cuando se enfada, este Pokémon descarga la energía que almacena en el interior de las bolsas de las mejillas.", hab: ["Elec. Estática"], h: 0.4, w: 6.0 },
-
-];
-
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
 const cardContainer = document.getElementById('card-container');
+
+// URL de la API de Google Sheets (debes reemplazar 'YOUR_API_KEY' con tu clave API y 'ID_DE_TU_HOJA' con el ID de tu hoja)
+const apiKey = 'AIzaSyCJNLZzj_pS4jC3VZ4jc9EuSvPnYlyN6hY';
+const sheetID = '1yyp3PBLbVy6S8SbomZy0vUgZpIRiZOIL6CJuH5nHajo';
+const sheetName = 'pokemons'; // Nombre de la pestaña de la hoja de cálculo
+const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
 
 // FUNCION QUE GENERA LAS TARJETAS
 function generatePokemonCards(pokemons) {
@@ -30,6 +20,7 @@ function generatePokemonCards(pokemons) {
 
     // Recorrido del arreglo de información de Pokémon
     pokemons.forEach(pokemon => {
+        console.log('Processing Pokémon:', pokemon);
         // Asigna el color del tipo de Pokémon
         const typeClass = `tipo-${pokemon.type[0].toLowerCase()}`;
 
@@ -110,6 +101,28 @@ function getTypeColor(type) {
     }
 }
 
+// FUNCION PARA TRANSFORMAR LOS DATOS OBTENIDOS DE GOOGLE SHEETS
+function transformPokemonData(data) {
+    return data.map(row => {
+        return {
+            region: row[0],           // Región del Pokémon
+            number: parseInt(row[1]), // Número del Pokémon
+            name: row[2],             // Nombre del Pokémon
+            type: row[3].split(','),  // Tipos del Pokémon, separados por comas
+            img: row[4],              // URL de la imagen
+            des: row[5],              // Descripción del Pokémon
+            hab: row[6].split(','),   // Habilidades del Pokémon, separadas por comas
+            h: parseFloat(row[7]),    // Altura en metros
+            w: parseFloat(row[8])     // Peso en kilogramos
+        };
+    });
+}
 
-// LLAMADA DE LA FUNCION QUE GENERA LA TARJETA
-generatePokemonCards(pokemons);
+// FUNCION PARA OBTENER LOS DATOS DE GOOGLE SHEETS
+fetch(sheetURL)
+  .then(response => response.json())
+  .then(data => {
+      pokemons = transformPokemonData(data.values.slice(1)); // Ignora la primera fila (cabecera)
+      generatePokemonCards(pokemons); // Genera las tarjetas con los datos obtenidos
+  })
+  .catch(error => console.error('Error al obtener los datos:', error));
