@@ -1,9 +1,9 @@
 /* Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.2 
+Version: 1.3
 Fecha de inicio de esta version: 26/09/24
-Fecha de finalización de esta version: 26/09/24 */
+Fecha de finalización de esta version: 27/09/24 */
 
 /* ARREGLO DE INFORMACION DE POKEMON */
 const pokemons = [
@@ -18,11 +18,13 @@ const pokemons = [
     { region: "Kanto", number: 8, name: "Wartortle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png", des: "Tiene una cola larga y peluda que simboliza la longevidad y lo hace popular entre los mayores.", hab: ["Torrente"], h: 1.0, w: 22.5 },
     { region: "Kanto", number: 9, name: "Blastoise", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png", des: "Aumenta de peso deliberadamente para contrarrestar la fuerza de los chorros de agua que dispara.", hab: ["Torrente"], h: 1.6, w: 85.5 },
     { region: "Kanto", number: 25, name: "Pikachu", type: ["Eléctrico"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png", des: "Cuando se enfada, este Pokémon descarga la energía que almacena en el interior de las bolsas de las mejillas.", hab: ["Elec. Estática"], h: 0.4, w: 6.0 },
-
+    //{ region: "", number: , name: "", type: [""], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png", des: "C", hab: [""], h: , w:  },
 ];
 
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
 const cardContainer = document.getElementById('card-container');
+// CAPTURA EL INPUT DE LA BARRA DE BUSQUEDA
+const searchInput = document.getElementById('pokemon-search');
 
 // FUNCION QUE GENERA LAS TARJETAS
 function generatePokemonCards(pokemons) {
@@ -66,6 +68,20 @@ function generatePokemonCards(pokemons) {
     });
 }
 
+// EVENTO PARA FILTRAR LOS POKEMON MIENTRAS SE ESCRIBE
+searchInput.addEventListener('input', function () {
+    const searchQuery = searchInput.value.toLowerCase();
+
+    // Filtra los Pokémon que coincidan con el nombre o número
+    const filteredPokemons = pokemons.filter(pokemon => {
+        return pokemon.name.toLowerCase().includes(searchQuery) ||
+            pokemon.number.toString().includes(searchQuery);
+    });
+
+    // Regenera las tarjetas con los Pokémon filtrados
+    generatePokemonCards(filteredPokemons);
+});
+
 // FUNCION PARA MOSTRAR EL MODAL
 function showPokemonDetails(pokemonNumber) {
     // ENCUENTRA EL POKEMON POR SU NUMERO
@@ -105,6 +121,7 @@ function getTypeColor(type) {
         case 'planta': return 'rgba(63, 161, 41, 0.5)';
         case 'veneno': return 'rgba(145, 65, 203, 0.5)';
         case 'volador': return 'rgba(129, 185, 239, 0.5)';
+        case 'eléctrico': return 'rgba(250, 192, 0, 0.5)';
         // Agrega más casos para otros tipos de Pokémon
         default: return 'rgba(0, 0, 0, 0)'; // Color por defecto si no se encuentra el tipo
     }

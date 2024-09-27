@@ -1,12 +1,14 @@
 /* Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.2 
+Version: 1.3
 Fecha de inicio de esta version: 26/09/24
-Fecha de finalización de esta version: 26/09/24 */
+Fecha de finalización de esta version: 27/09/24 */
 
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
 const cardContainer = document.getElementById('card-container');
+// CAPTURA EL INPUT DE LA BARRA DE BUSQUEDA
+const searchInput = document.getElementById('pokemon-search');
 
 // URL de la API de Google Sheets (debes reemplazar 'YOUR_API_KEY' con tu clave API y 'ID_DE_TU_HOJA' con el ID de tu hoja)
 const apiKey = 'AIzaSyCJNLZzj_pS4jC3VZ4jc9EuSvPnYlyN6hY';
@@ -16,7 +18,21 @@ const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/value
 
 // FUNCION QUE GENERA LAS TARJETAS
 function generatePokemonCards(pokemons) {
-    cardContainer.innerHTML = ''; // Limpia el contenedor con cada recarga
+    cardContainer.innerHTML = ''; // LIMPIA EL CONTENEDOR CON CADA RECARGA
+
+    if (pokemons.length === 0) {
+        // Mostrar mensaje si no se encuentran Pokémon
+        cardContainer.innerHTML = `
+            <div class="d-flex justify-content-center align-items-center" style="height: 40vh; width: 100%;">
+                <div class="alert alert-warning text-center p-5" role="alert" style="font-size: 1.5rem; max-width: 400px;">
+                    No se encontraron Pokémon con ese nombre o número. Verifica el nombre y no coloques ceros antes del número.
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+
 
     // Recorrido del arreglo de información de Pokémon
     pokemons.forEach(pokemon => {
@@ -57,6 +73,20 @@ function generatePokemonCards(pokemons) {
     });
 }
 
+// EVENTO PARA FILTRAR LOS POKEMON MIENTRAS SE ESCRIBE
+searchInput.addEventListener('input', function () {
+    const searchQuery = searchInput.value.toLowerCase();
+
+    // Filtra los Pokémon que coincidan con el nombre o número
+    const filteredPokemons = pokemons.filter(pokemon => {
+        return pokemon.name.toLowerCase().includes(searchQuery) ||
+            pokemon.number.toString().includes(searchQuery)
+    });
+
+    // Regenera las tarjetas con los Pokémon filtrados
+    generatePokemonCards(filteredPokemons);
+});
+
 // FUNCION PARA MOSTRAR EL MODAL
 function showPokemonDetails(pokemonNumber) {
     // ENCUENTRA EL POKEMON POR SU NUMERO
@@ -96,6 +126,9 @@ function getTypeColor(type) {
         case 'planta': return 'rgba(63, 161, 41, 0.5)';
         case 'veneno': return 'rgba(145, 65, 203, 0.5)';
         case 'volador': return 'rgba(129, 185, 239, 0.5)';
+        case 'eléctrico': return 'rgba(250, 192, 0, 0.5)';
+        case 'bicho': return 'rgba(145, 161, 25, 0.5)';
+        case 'normal': return 'rgba(159, 161, 159, 0.5)';
         // Agrega más casos para otros tipos de Pokémon
         default: return 'rgba(0, 0, 0, 0)'; // Color por defecto si no se encuentra el tipo
     }
@@ -120,9 +153,9 @@ function transformPokemonData(data) {
 
 // FUNCION PARA OBTENER LOS DATOS DE GOOGLE SHEETS
 fetch(sheetURL)
-  .then(response => response.json())
-  .then(data => {
-      pokemons = transformPokemonData(data.values.slice(1)); // Ignora la primera fila (cabecera)
-      generatePokemonCards(pokemons); // Genera las tarjetas con los datos obtenidos
-  })
-  .catch(error => console.error('Error al obtener los datos:', error));
+    .then(response => response.json())
+    .then(data => {
+        pokemons = transformPokemonData(data.values.slice(1)); // Ignora la primera fila (cabecera)
+        generatePokemonCards(pokemons); // Genera las tarjetas con los datos obtenidos
+    })
+    .catch(error => console.error('Error al obtener los datos:', error));
