@@ -38,13 +38,13 @@ Fecha de finalización de esta version: 27/09/24 -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+                            <a class="nav-link" aria-current="page" href="index.html">Inicio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="pokedex-completa.html">Pokédex Completa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pokedex-tipo.html">Pokédex por Tipo</a>
+                            <a class="nav-link active" href="pokedex-tipo.html">Pokédex por Tipo</a>
                         </li>
                     </ul>
                 </div>
@@ -58,16 +58,41 @@ Fecha de finalización de esta version: 27/09/24 -->
 
             <!-- TITULO E INFORMACION DE INICIO -->
             <section class="text-center">
-                <h1>¡Bienvenido a la Pokédex de Iniciales!</h1>
-                <p class="lead">Aquí encontrarás la información de los Pokémon iniciales de cada región. Para la
-                    información
-                    de más Pokémon dirígete a la pestaña de “Pokédex Completa”.</p>
+                <h1>¡Bienvenido a la Pokédex por Tipo!</h1>
+                <p class="lead">Aquí encontrarás la información de los Pokémon por su tipo.</p>
             </section>
 
             <!-- BARRA DE BUSQUEDA DINAMICA -->
             <div class="row my-4">
-                <div class="col-md-6 mx-auto">
-                    <input type="text" id="pokemon-search" class="form-control" placeholder="Buscar Pokémon...">
+                <div class="col-md-4 mx-auto">
+                    <select id="pokemon-type" class="form-select">
+                        <option selected>Todos los tipos</option>
+                        <option value="1" class="text-center" style="background-color: rgba(41, 128, 239, 0.25);">Agua
+                        </option>
+                        <option value="2" class="text-center" style="background-color: rgba(145, 161, 25, 0.25);">Bicho
+                        </option>
+                        <option value="3" class="text-center" style="background-color: rgba(250, 192, 0, 0.25);">
+                            Eléctrico</option>
+                        <option value="4" class="text-center" style="background-color: rgba(240, 128, 48, 0.25);">Fuego
+                        </option>
+                        <option value="5" class="text-center" style="background-color: rgba(159, 161, 159, 0.25);">
+                            Normal</option>
+                        <option value="6" class="text-center" style="background-color: rgba(63, 161, 41, 0.25);">Planta
+                        </option>
+                        <option value="7" class="text-center" style="background-color: rgba(145, 81, 33, 0.25);">Tierra
+                        </option>
+                        <option value="8" class="text-center" style="background-color: rgba(145, 65, 203, 0.25);">Veneno
+                        </option>
+                        <option value="9" class="text-center" style="background-color: rgba(129, 185, 239, 0.25);">
+                            Volador</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR QUE MUESTRA LA CANTIDAD ENCONTRADA -->
+            <div class="row my-2">
+                <div class="col-md-4 mx-auto">
+                    <p id="pokemon-count" class="text-center">Se encontraron 0 Pokémon.</p>
                 </div>
             </div>
 
@@ -89,7 +114,7 @@ Fecha de finalización de esta version: 27/09/24 -->
     </footer>
 
     <!-- ENLACE AL SCRIPT DEL PROYECTO -->
-    <script src="script.js"></script>
+    <script src="script3.js"></script>
 
     <!-- ENLACE AL SCRIPT DE BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

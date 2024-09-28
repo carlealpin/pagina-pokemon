@@ -1,8 +1,8 @@
 /* Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.3
-Fecha de inicio de esta version: 26/09/24
+Version: 1.4
+Fecha de inicio de esta version: 27/09/24
 Fecha de finalización de esta version: 27/09/24 */
 
 /* ARREGLO DE INFORMACION DE POKEMON */
@@ -17,8 +17,7 @@ const pokemons = [
     { region: "Kanto", number: 7, name: "Squirtle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png", des: "Tras nacer, se le hincha el lomo y se le forma un caparazón. Escupe poderosa espuma por la boca.", hab: ["Torrente"], h: 0.5, w: 9.0 },
     { region: "Kanto", number: 8, name: "Wartortle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png", des: "Tiene una cola larga y peluda que simboliza la longevidad y lo hace popular entre los mayores.", hab: ["Torrente"], h: 1.0, w: 22.5 },
     { region: "Kanto", number: 9, name: "Blastoise", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png", des: "Aumenta de peso deliberadamente para contrarrestar la fuerza de los chorros de agua que dispara.", hab: ["Torrente"], h: 1.6, w: 85.5 },
-    { region: "Kanto", number: 25, name: "Pikachu", type: ["Eléctrico"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png", des: "Cuando se enfada, este Pokémon descarga la energía que almacena en el interior de las bolsas de las mejillas.", hab: ["Elec. Estática"], h: 0.4, w: 6.0 },
-    //{ region: "", number: , name: "", type: [""], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png", des: "C", hab: [""], h: , w:  },
+     //{ region: "", number: , name: "", type: [""], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png", des: "C", hab: [""], h: , w:  },
 ];
 
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
@@ -117,11 +116,14 @@ function showPokemonDetails(pokemonNumber) {
 function getTypeColor(type) {
     switch (type.toLowerCase()) {
         case 'agua': return 'rgba(41, 128, 239, 0.5)';
+        case 'bicho': return 'rgba(145, 161, 25, 0.5)';
+        case 'eléctrico': return 'rgba(250, 192, 0, 0.5)';
         case 'fuego': return 'rgba(240, 128, 48, 0.5)';
+        case 'normal': return 'rgba(159, 161, 159, 0.5)';
         case 'planta': return 'rgba(63, 161, 41, 0.5)';
+        case 'tierra': return 'rgba(145, 81, 33, 0.5)';
         case 'veneno': return 'rgba(145, 65, 203, 0.5)';
         case 'volador': return 'rgba(129, 185, 239, 0.5)';
-        case 'eléctrico': return 'rgba(250, 192, 0, 0.5)';
         // Agrega más casos para otros tipos de Pokémon
         default: return 'rgba(0, 0, 0, 0)'; // Color por defecto si no se encuentra el tipo
     }

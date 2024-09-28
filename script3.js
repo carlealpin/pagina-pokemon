@@ -7,8 +7,9 @@ Fecha de finalización de esta version: 27/09/24 */
 
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
 const cardContainer = document.getElementById('card-container');
-// CAPTURA EL INPUT DE LA BARRA DE BUSQUEDA
-const searchInput = document.getElementById('pokemon-search');
+
+// SELECCIONA LA UBICACION DONDE IRA EL CONTEO
+const pokemonCount = document.getElementById('pokemon-count');
 
 // VARIABLES PARA LA CONEXION CON LA API DE GOOGLE SHEETS
 const apiKey = 'AIzaSyCJNLZzj_pS4jC3VZ4jc9EuSvPnYlyN6hY';
@@ -20,21 +21,10 @@ const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/value
 function generatePokemonCards(pokemons) {
     cardContainer.innerHTML = ''; // LIMPIA EL CONTENEDOR CON CADA RECARGA
 
-    if (pokemons.length === 0) {
-        // MENSAJE DE QUE NO SE ENCONTRO POKEMON
-        cardContainer.innerHTML = `
-            <div class="d-flex justify-content-center align-items-center" style="height: 40vh; width: 100%;">
-                <div class="alert alert-warning text-center p-5" role="alert" style="font-size: 1.5rem; max-width: 400px;">
-                    No se encontraron Pokémon con ese nombre o número. Verifica el nombre y no coloques ceros antes del número.
-                </div>
-            </div>
-        `;
-        return;
-    }
-
     // RECORRIDO DEL ARREGLO DE LA INFORMACION POKEMON
     pokemons.forEach(pokemon => {
         console.log('Processing Pokémon:', pokemon);
+
         // ASIGNA EL COLOR AL POKEMON POR SU TIPO
         const typeClass = `tipo-${pokemon.type[0].toLowerCase()}`;
 
@@ -60,7 +50,7 @@ function generatePokemonCards(pokemons) {
         const cardImgWrapper = document.getElementById(`card-img-${pokemon.number}`);
 
         if (pokemon.type.length > 1) {
-            // PLICA DEGRADADO AL COLOR SI EL POKEMON TIENE MAS DE UN TIPO
+            // APLICA DEGRADADO AL COLOR SI EL POKEMON TIENE MAS DE UN TIPO
             const color1 = getTypeColor(pokemon.type[0]);
             const color2 = getTypeColor(pokemon.type[1]);
             cardImgWrapper.style.background = `linear-gradient(90deg, ${color1}, ${color2})`;
@@ -71,19 +61,31 @@ function generatePokemonCards(pokemons) {
     });
 }
 
-// EVENTO PARA FILTRAR LOS POKEMON MIENTRAS SE ESCRIBE
-searchInput.addEventListener('input', function () {
-    const searchQuery = searchInput.value.toLowerCase();
+// SELECCIONA EL DROPDOWN DE LOS TIPOS DE POKEMON
+const pokemonTypeSelect = document.getElementById('pokemon-type');
 
-    // FILTRA LOS POKEMON QUE COINCIDAN CON EL NOMBRE O NUMERO
-    const filteredPokemons = pokemons.filter(pokemon => {
-        return pokemon.name.toLowerCase().includes(searchQuery) ||
-            pokemon.number.toString().includes(searchQuery)
-    });
+// ESCUCHA EL CAMBIO DEL TIPO Y ASIGNA EL NUMERO AL CONTEO
+pokemonTypeSelect.addEventListener('change', function () {
+    const selectedType = pokemonTypeSelect.options[pokemonTypeSelect.selectedIndex].text.toLowerCase(); // Obtiene el tipo seleccionado
 
-    // GENERA LAS TARJETAS CON LA BUSQUEDA
-    generatePokemonCards(filteredPokemons);
+    // AL SELECCIONAR TODOS LOS TIPOS SE MUESTRAN TODOS LOS POKEMON
+    if (selectedType === 'todos los tipos') {
+        generatePokemonCards(pokemons);
+        pokemonCount.innerText = `Se encontraron ${pokemons.length} Pokémon en total.`;
+    } else {
+        // FILTRA LOS POKEMON POR EL TIPO SELECCIONADO
+        const filteredPokemons = pokemons.filter(pokemon =>
+            pokemon.type.some(t => t.toLowerCase() === selectedType)
+        );
+        // GENERA LAS TARJETAS DEL TIPO SELECCIONADO
+        generatePokemonCards(filteredPokemons);
+
+        // ACTUALIZA EL CONTEO DE LOS POKEMON ENCONTRADOS
+        const pokemonText = filteredPokemons.length === 1 ? 'Pokémon' : 'Pokémon';
+        pokemonCount.innerText = `Se encontraron ${filteredPokemons.length} ${pokemonText} tipo ${selectedType}.`;
+    }
 });
+
 
 // FUNCION PARA MOSTRAR EL MODAL
 function showPokemonDetails(pokemonNumber) {
@@ -95,8 +97,8 @@ function showPokemonDetails(pokemonNumber) {
 
     // APLICA DEGRADADO AL ENCABEZADO DEL MODAL SI EL POKEMON TIENE MAS DE UN TIPO
     if (pokemon.type.length > 1) {
-        const color1 = getTypeColor(pokemon.type[0]); // Color del primer tipo
-        const color2 = getTypeColor(pokemon.type[1]); // Color del segundo tipo
+        const color1 = getTypeColor(pokemon.type[0]);
+        const color2 = getTypeColor(pokemon.type[1]);
 
         // APLICA EL DEGRADADO SI TIENE DOS TIPOS
         modalHeader.style.background = `linear-gradient(90deg, ${color1}, ${color2})`;
@@ -128,7 +130,7 @@ function getTypeColor(type) {
         case 'tierra': return 'rgba(145, 81, 33, 0.5)';
         case 'veneno': return 'rgba(145, 65, 203, 0.5)';
         case 'volador': return 'rgba(129, 185, 239, 0.5)';
-        
+
         default: return 'rgba(0, 0, 0, 0)'; // COLOR POR DEFECTO EN CASO DE QUE NO SE ENCUENTRE EL TIPO
     }
 }
@@ -137,15 +139,15 @@ function getTypeColor(type) {
 function transformPokemonData(data) {
     return data.map(row => {
         return {
-            region: row[0],           
-            number: parseInt(row[1]), 
-            name: row[2],             
-            type: row[3].split(','),  
-            img: row[4],              
-            des: row[5],              
-            hab: row[6].split(','),   
-            h: parseFloat(row[7]),    
-            w: parseFloat(row[8])     
+            region: row[0],
+            number: parseInt(row[1]),
+            name: row[2],
+            type: row[3].split(','),
+            img: row[4],
+            des: row[5],
+            hab: row[6].split(','),
+            h: parseFloat(row[7]),
+            w: parseFloat(row[8])
         };
     });
 }
