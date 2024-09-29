@@ -1,9 +1,9 @@
 <!-- Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.4
+Version: 1.5
 Fecha de inicio de esta version: 27/09/24
-Fecha de finalización de esta version: 27/09/24 -->
+Fecha de finalización de esta version: 28/09/24 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,6 @@ Fecha de finalización de esta version: 27/09/24 -->
 </head>
 
 <body>
-
     <!-- ENCABEZADO DE LA PAGINA -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,13 +37,13 @@ Fecha de finalización de esta version: 27/09/24 -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="index.html">Inicio</a>
+                            <a class="nav-link" href="index.html">Inicio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="pokedex-completa.html">Pokédex Completa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="pokedex-tipo.html">Pokédex por Tipo</a>
+                            <a class="nav-link active" aria-current="page" href="pokedex-tipo.html">Pokédex por Tipo</a>
                         </li>
                     </ul>
                 </div>
@@ -62,43 +61,66 @@ Fecha de finalización de esta version: 27/09/24 -->
                 <p class="lead">Aquí encontrarás la información de los Pokémon por su tipo.</p>
             </section>
 
-            <!-- BARRA DE BUSQUEDA DINAMICA -->
+            <!-- DROPDOWN (SELECT) PARA LOS TIPOS DE POKEMON COLOREADOS -->
             <div class="row my-4">
                 <div class="col-md-4 mx-auto">
                     <select id="pokemon-type" class="form-select">
-                        <option selected>Todos los tipos</option>
-                        <option value="1" class="text-center" style="background-color: rgba(41, 128, 239, 0.25);">Agua
+                        <option selected>Selecciona un tipo</option>
+                        <option value="1" class="text-center" style="background-color: rgba(96, 161, 184, 0.25);">Acero
                         </option>
-                        <option value="2" class="text-center" style="background-color: rgba(145, 161, 25, 0.25);">Bicho
+                        <option value="2" class="text-center" style="background-color: rgba(41, 128, 239, 0.25);">Agua
                         </option>
-                        <option value="3" class="text-center" style="background-color: rgba(250, 192, 0, 0.25);">
+                        <option value="3" class="text-center" style="background-color: rgba(145, 161, 25, 0.25);">Bicho
+                        </option>
+                        <option value="4" class="text-center" style="background-color: rgba(80, 96, 225, 0.25);">Dragón
+                        </option>
+                        <option value="5" class="text-center" style="background-color: rgba(250, 192, 0, 0.25);">
                             Eléctrico</option>
-                        <option value="4" class="text-center" style="background-color: rgba(240, 128, 48, 0.25);">Fuego
+                        <option value="6" class="text-center" style="background-color: rgba(112, 65, 112, 0.25);">
+                            Fantasma</option>
+                        <option value="7" class="text-center" style="background-color: rgba(240, 128, 48, 0.25);">Fuego
                         </option>
-                        <option value="5" class="text-center" style="background-color: rgba(159, 161, 159, 0.25);">
+                        <option value="8" class="text-center" style="background-color: rgba(239, 112, 239, 0.25);">Hada
+                        </option>
+                        <option value="9" class="text-center" style="background-color: rgba(61, 206, 243, 0.25);">Hielo
+                        </option>
+                        <option value="10" class="text-center" style="background-color: rgba(255, 128, 0, 0.25);">Lucha
+                        </option>
+                        <option value="11" class="text-center" style="background-color: rgba(159, 161, 159, 0.25);">
                             Normal</option>
-                        <option value="6" class="text-center" style="background-color: rgba(63, 161, 41, 0.25);">Planta
+                        <option value="12" class="text-center" style="background-color: rgba(63, 161, 41, 0.25);">Planta
                         </option>
-                        <option value="7" class="text-center" style="background-color: rgba(145, 81, 33, 0.25);">Tierra
+                        <option value="13" class="text-center" style="background-color: rgba(239, 65, 121, 0.25);">
+                            Písiquico</option>
+                        <option value="14" class="text-center" style="background-color: rgba(175, 169, 129, 0.25);">Roca
                         </option>
-                        <option value="8" class="text-center" style="background-color: rgba(145, 65, 203, 0.25);">Veneno
+                        <option value="15" class="text-center" style="background-color: rgba(98, 77, 78, 0.25);">
+                            Siniestro</option>
+                        <option value="16" class="text-center" style="background-color: rgba(145, 81, 33, 0.25);">Tierra
                         </option>
-                        <option value="9" class="text-center" style="background-color: rgba(129, 185, 239, 0.25);">
+                        <option value="17" class="text-center" style="background-color: rgba(145, 65, 203, 0.25);">
+                            Veneno</option>
+                        <option value="18" class="text-center" style="background-color: rgba(129, 185, 239, 0.25);">
                             Volador</option>
                     </select>
                 </div>
             </div>
 
-            <!-- CONTENEDOR QUE MUESTRA LA CANTIDAD ENCONTRADA -->
+            <!-- CONTADOR QUE MUESTRA LA CANTIDAD ENCONTRADA -->
             <div class="row my-2">
                 <div class="col-md-4 mx-auto">
-                    <p id="pokemon-count" class="text-center">Se encontraron 0 Pokémon.</p>
+                    <p id="pokemon-count" class="text-center"></p>
                 </div>
             </div>
 
             <!-- TARJETAS DE LOS POKÉMON -->
             <div id="card-container" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-4">
 
+            </div>
+
+            <!-- BOTON PARA MOSTRAR 30 POKEMON MAS -->
+            <div class="d-flex justify-content-center mt-4">
+                <button id="load-more" class="btn btn-dark" style="display:none;">Cargar más...</button>
             </div>
         </div>
     </main>
@@ -109,7 +131,7 @@ Fecha de finalización de esta version: 27/09/24 -->
             <p class="mb-0">&copy; 2024 Página Pokémon. Para uso demostrativo.</p>
             <hr class="my-4">
             <p class="mb-0">Diseñado por Carlos Leal Pineda.</a></p>
-            <p class="mb-0">v1.4</a></p>
+            <p class="mb-0">v1.5</a></p>
         </div>
     </footer>
 
@@ -143,5 +165,4 @@ Fecha de finalización de esta version: 27/09/24 -->
         </div>
     </div>
 </body>
-
 </html>

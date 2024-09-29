@@ -1,9 +1,9 @@
 <!-- Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.4
+Version: 1.5
 Fecha de inicio de esta version: 27/09/24
-Fecha de finalización de esta version: 27/09/24 -->
+Fecha de finalización de esta version: 28/09/24 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,6 @@ Fecha de finalización de esta version: 27/09/24 -->
 </head>
 
 <body>
-
     <!-- ENCABEZADO DE LA PAGINA -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -71,9 +70,21 @@ Fecha de finalización de esta version: 27/09/24 -->
                 </div>
             </div>
 
+            <!-- CONTADOR QUE MUESTRA LA CANTIDAD ENCONTRADA -->
+            <div class="row my-2">
+                <div class="col-md-4 mx-auto">
+                    <p id="pokemon-count" class="text-center"></p>
+                </div>
+            </div>
+
             <!-- TARJETAS DE LOS POKÉMON -->
             <div id="card-container" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-4">
 
+            </div>
+
+            <!-- BOTON PARA MOSTRAR 30 POKEMON MAS -->
+            <div class="d-flex justify-content-center mt-4">
+                <button id="load-more" class="btn btn-dark" style="display:none;">Cargar más...</button>
             </div>
         </div>
     </main>
@@ -84,7 +95,7 @@ Fecha de finalización de esta version: 27/09/24 -->
             <p class="mb-0">&copy; 2024 Página Pokémon. Para uso demostrativo.</p>
             <hr class="my-4">
             <p class="mb-0">Diseñado por Carlos Leal Pineda.</a></p>
-            <p class="mb-0">v1.4</a></p>
+            <p class="mb-0">v1.5</a></p>
         </div>
     </footer>
 
@@ -118,5 +129,4 @@ Fecha de finalización de esta version: 27/09/24 -->
         </div>
     </div>
 </body>
-
 </html>

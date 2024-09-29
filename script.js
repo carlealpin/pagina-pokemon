@@ -1,40 +1,36 @@
 /* Titulo del Proyecto: pagina-pokemon.
 Elaborado por: Carlos Leal.
 Fecha de inicio: 24/09/24
-Version: 1.4
+Version: 1.5
 Fecha de inicio de esta version: 27/09/24
-Fecha de finalización de esta version: 27/09/24 */
-
-/* ARREGLO DE INFORMACION DE POKEMON */
-const pokemons = [
-    /* KANTO */
-    { region: "Kanto", number: 1, name: "Bulbasaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png", des: "Tras nacer, crece alimentándose durante un tiempo de los nutrientes que contiene el bulbo de su lomo.", hab: ["Espesura"], h: 0.7, w: 6.9 },
-    { region: "Kanto", number: 2, name: "Ivysaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png", des: "Cuanta más luz solar recibe, más aumenta su fuerza y más se desarrolla el capullo que tiene en el lomo.", hab: ["Espesura"], h: 1.0, w: 13.0 },
-    { region: "Kanto", number: 3, name: "Venusaur", type: ["Planta", "Veneno"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png", des: "Puede convertir la luz del sol en energía. Por esa razón, es más poderoso en verano.", hab: ["Espesura"], h: 2.0, w: 100.0 },
-    { region: "Kanto", number: 4, name: "Charmander", type: ["Fuego"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png", des: "La llama de su cola indica su fuerza vital. Si está débil, la llama arderá más tenue.", hab: ["Mar Llamas"], h: 0.6, w: 8.5 },
-    { region: "Kanto", number: 5, name: "Charmeleon", type: ["Fuego"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png", des: "Al agitar su ardiente cola, eleva poco a poco la temperatura a su alrededor para sofocar a sus rivales.", hab: ["Mar Llamas"], h: 1.1, w: 19.0 },
-    { region: "Kanto", number: 6, name: "Charizard", type: ["Fuego", "Volador"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png", des: "Cuando se enfurece de verdad, la llama de la punta de su cola se vuelve de color azul claro.", hab: ["Mar Llamas"], h: 1.7, w: 90.5 },
-    { region: "Kanto", number: 7, name: "Squirtle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png", des: "Tras nacer, se le hincha el lomo y se le forma un caparazón. Escupe poderosa espuma por la boca.", hab: ["Torrente"], h: 0.5, w: 9.0 },
-    { region: "Kanto", number: 8, name: "Wartortle", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png", des: "Tiene una cola larga y peluda que simboliza la longevidad y lo hace popular entre los mayores.", hab: ["Torrente"], h: 1.0, w: 22.5 },
-    { region: "Kanto", number: 9, name: "Blastoise", type: ["Agua"], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png", des: "Aumenta de peso deliberadamente para contrarrestar la fuerza de los chorros de agua que dispara.", hab: ["Torrente"], h: 1.6, w: 85.5 },
-     //{ region: "", number: , name: "", type: [""], img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png", des: "C", hab: [""], h: , w:  },
-];
+Fecha de finalización de esta version: 28/09/24 */
 
 // SELECCIONA LA UBICACION DONDE IRAN LAS TARJETAS
 const cardContainer = document.getElementById('card-container');
-// CAPTURA EL INPUT DE LA BARRA DE BUSQUEDA
-const searchInput = document.getElementById('pokemon-search');
 
-// FUNCION QUE GENERA LAS TARJETAS
-function generatePokemonCards(pokemons) {
-    cardContainer.innerHTML = ''; // Limpia el contenedor con cada recarga
+// LISTA DE POKEMON QUE YO QUIERO MOSTRAR
+const selectedPokemons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 25];
 
-    // Recorrido del arreglo de información de Pokémon
-    pokemons.forEach(pokemon => {
-        // Asigna el color del tipo de Pokémon
+// VARIABLES PARA LA CONEXION CON LA API DE GOOGLE SHEETS
+const apiKey = 'AIzaSyCJNLZzj_pS4jC3VZ4jc9EuSvPnYlyN6hY';
+const sheetID = '1yyp3PBLbVy6S8SbomZy0vUgZpIRiZOIL6CJuH5nHajo';
+const sheetName = 'pokemons'; // PESTAÑA DE LA HOJA DE CALCUL0
+const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
+
+// FUNCION QUE GENERA LAS TARJETAS SOLO PARA LOS POKÉMON SELECCIONADOS
+function generateSelectedPokemonCards(pokemons, selectedPokemons) {
+    cardContainer.innerHTML = ''; // LIMPIA EL CONTENEDOR CON CADA RECARGA
+
+    // FILTRA LOS POKEMON POR LOS SELECCIONADOS
+    const filteredPokemons = pokemons.filter(pokemon => selectedPokemons.includes(pokemon.number));
+
+    // RECORRIDO DEL ARREGLO FILTRADO PARA GENERAR LAS TARJETAS
+    filteredPokemons.forEach(pokemon => {
+        console.log('Processing Pokémon:', pokemon);
+        // ASIGNA EL COLOR AL POKEMON POR SU TIPO
         const typeClass = `tipo-${pokemon.type[0].toLowerCase()}`;
 
-        // Creación de HTML de la tarjeta
+        // CREACION DE LA TARJETA EN HTML
         const cardHTML = `
             <div class="col">
                 <div class="card h-100" data-bs-toggle="modal" data-bs-target="#pokemonModal" onclick="showPokemonDetails(${pokemon.number})">
@@ -49,55 +45,51 @@ function generatePokemonCards(pokemons) {
             </div>
         `;
 
-        // Inserta el HTML generado
+        // INSERTA EL HTML GENERADO
         cardContainer.innerHTML += cardHTML;
 
-        // Aplicar el degradado o el color al contenedor de la imagen
+        // OBTIENE EL NUMERO DEL POKEMON
         const cardImgWrapper = document.getElementById(`card-img-${pokemon.number}`);
 
         if (pokemon.type.length > 1) {
-            // Si tiene dos tipos, aplicar un degradado entre ambos colores
+            // APLICA DEGRADADO AL COLOR SI EL POKEMON TIENE MAS DE UN TIPO
             const color1 = getTypeColor(pokemon.type[0]);
             const color2 = getTypeColor(pokemon.type[1]);
             cardImgWrapper.style.background = `linear-gradient(90deg, ${color1}, ${color2})`;
         } else {
-            // Si solo tiene un tipo, usar el color correspondiente
+            // APLICA EL COLOR SI SOLO TIENE UN TIPO
             cardImgWrapper.style.background = getTypeColor(pokemon.type[0]);
         }
     });
 }
 
-// EVENTO PARA FILTRAR LOS POKEMON MIENTRAS SE ESCRIBE
-searchInput.addEventListener('input', function () {
-    const searchQuery = searchInput.value.toLowerCase();
+fetch(sheetURL)
+    .then(response => response.json())
+    .then(data => {
+        pokemons = transformPokemonData(data.values.slice(1)); // IGNORA LA CABECERA
 
-    // Filtra los Pokémon que coincidan con el nombre o número
-    const filteredPokemons = pokemons.filter(pokemon => {
-        return pokemon.name.toLowerCase().includes(searchQuery) ||
-            pokemon.number.toString().includes(searchQuery);
-    });
-
-    // Regenera las tarjetas con los Pokémon filtrados
-    generatePokemonCards(filteredPokemons);
-});
+        // GENERA LAS TARJETAS SOLO PARA LOS POKÉMON QUE QUIERES MOSTRAR
+        generateSelectedPokemonCards(pokemons, selectedPokemons);
+    })
+    .catch(error => console.error('Error al obtener los datos:', error));
 
 // FUNCION PARA MOSTRAR EL MODAL
 function showPokemonDetails(pokemonNumber) {
     // ENCUENTRA EL POKEMON POR SU NUMERO
     const pokemon = pokemons.find(p => p.number === pokemonNumber);
 
-    // Obtener el encabezado del modal
+    // OBTENER EL ENCABEZADO DEL MODAL
     const modalHeader = document.getElementById('modal-header');
 
-    // Si el Pokémon tiene más de un tipo, creamos un degradado, si no, usamos un solo color
+    // APLICA DEGRADADO AL ENCABEZADO DEL MODAL SI EL POKEMON TIENE MAS DE UN TIPO
     if (pokemon.type.length > 1) {
-        const color1 = getTypeColor(pokemon.type[0]); // Color del primer tipo
-        const color2 = getTypeColor(pokemon.type[1]); // Color del segundo tipo
+        const color1 = getTypeColor(pokemon.type[0]);
+        const color2 = getTypeColor(pokemon.type[1]);
 
-        // Aplicar el degradado como fondo al encabezado del modal
+        // APLICA EL DEGRADADO SI TIENE DOS TIPOS
         modalHeader.style.background = `linear-gradient(90deg, ${color1}, ${color2})`;
     } else {
-        // Si tiene solo un tipo, asignamos un solo color de fondo
+        // SI TIENE SOLO UN TIPO SE ASIGNA EL COLOR
         modalHeader.style.background = getTypeColor(pokemon.type[0]);
     }
 
@@ -112,23 +104,54 @@ function showPokemonDetails(pokemonNumber) {
     document.getElementById('pokemonType').innerText = pokemon.type.join(', ');
 }
 
-// Función para obtener el color del tipo de Pokémon
+// FUNCION PARA OBTENER EL COLOR DEL TIPO
 function getTypeColor(type) {
     switch (type.toLowerCase()) {
+        case 'acero': return 'rgba(96, 161, 184, 0.5)';
         case 'agua': return 'rgba(41, 128, 239, 0.5)';
         case 'bicho': return 'rgba(145, 161, 25, 0.5)';
+        case 'dragón': return 'rgba(80, 96, 225, 0.5)';
         case 'eléctrico': return 'rgba(250, 192, 0, 0.5)';
+        case 'fantasma': return 'rgba(112, 65, 112, 0.5)';
         case 'fuego': return 'rgba(240, 128, 48, 0.5)';
+        case 'hada': return 'rgba(239, 112, 239, 0.5)';
+        case 'hielo': return 'rgba(61, 206, 243, 0.5)';
+        case 'lucha': return 'rgba(255, 128, 0, 0.5)';
         case 'normal': return 'rgba(159, 161, 159, 0.5)';
         case 'planta': return 'rgba(63, 161, 41, 0.5)';
+        case 'psíquico': return 'rgba(239, 65, 121, 0.5)';
+        case 'roca': return 'rgba(175, 169, 129, 0.5)';
+        case 'siniestro': return 'rgba(98, 77, 78, 0.5)';
         case 'tierra': return 'rgba(145, 81, 33, 0.5)';
         case 'veneno': return 'rgba(145, 65, 203, 0.5)';
         case 'volador': return 'rgba(129, 185, 239, 0.5)';
-        // Agrega más casos para otros tipos de Pokémon
-        default: return 'rgba(0, 0, 0, 0)'; // Color por defecto si no se encuentra el tipo
+
+        default: return 'rgba(0, 0, 0, 0)'; // COLOR POR DEFECTO EN CASO DE QUE NO SE ENCUENTRE EL TIPO
     }
 }
 
+// FUNCION PARA TRANSFORMAR LOS DATOS OBTENIDOS DE GOOGLE SHEETS
+function transformPokemonData(data) {
+    return data.map(row => {
+        return {
+            region: row[0],
+            number: parseInt(row[1]),
+            name: row[2],
+            type: row[3].split(','),
+            img: row[4],
+            des: row[5],
+            hab: row[6].split(','),
+            h: parseFloat(row[7]),
+            w: parseFloat(row[8])
+        };
+    });
+}
 
-// LLAMADA DE LA FUNCION QUE GENERA LA TARJETA
-generatePokemonCards(pokemons);
+// FUNCION PARA OBTENER LOS DATOS DE GOOGLE SHEETS
+fetch(sheetURL)
+    .then(response => response.json())
+    .then(data => {
+        pokemons = transformPokemonData(data.values.slice(1)); // IGNORA LA CABECERA
+        generatePokemonCards(pokemons); // GENERA LAS TARJETAS DE LOS DATOS OBTENIDOS
+    })
+    .catch(error => console.error('Error al obtener los datos:', error));
